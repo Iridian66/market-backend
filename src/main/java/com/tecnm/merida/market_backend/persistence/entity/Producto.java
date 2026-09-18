@@ -1,0 +1,29 @@
+package com.tecnm.merida.market_backend.persistence.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+public class Producto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_producto")
+    private Integer idProducto;
+
+    private String nombre;
+
+    @Column (name = "id_categoria")
+    private Integer id_categoria;
+
+    @Column (name = "codigo_barras")
+    private String codigoBarras;
+
+    @Column (name = "precio_venta")
+    private Double precioVenta;
+
+    @Column (name = "cabtidad_stock")
+    private  Integer cantidadStock;
+
+    private Boolean estado;
+}
