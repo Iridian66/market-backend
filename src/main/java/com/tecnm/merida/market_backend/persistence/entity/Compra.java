@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Compra {
 
@@ -17,7 +18,7 @@ public class Compra {
     @Column (name = "id_cliente")
     private String idCliente;
 
-    private LocalDate fecha;
+    private LocalDateTime fecha;
 
     @Column (name = "medio_pago")
     private String medioPago;

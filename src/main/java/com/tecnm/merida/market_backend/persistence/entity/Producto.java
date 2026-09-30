@@ -22,7 +22,7 @@ public class Producto {
     @Column (name = "precio_venta")
     private Double precioVenta;
 
-    @Column (name = "cabtidad_stock")
+    @Column (name = "cantidad_stock")
     private  Integer cantidadStock;
 
     private Boolean estado;
