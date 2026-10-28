@@ -2,10 +2,12 @@ package com.tecnm.merida.market_backend.persistence.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
+@Table (name = "compras")
 public class Compra {
 
     @Id
@@ -32,7 +34,7 @@ public class Compra {
     private Cliente cliente;
 
     //Relacion con CompraProducto
-    @OneToMany(mappedBy = "compra")
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL)
     private List<CompraProducto> productos;
 
 
@@ -83,4 +85,21 @@ public class Compra {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public List<CompraProducto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<CompraProducto> productos) {
+        this.productos = productos;
+    }
+
 }

@@ -23,11 +23,12 @@ public class Category {
         this.category = category;
     }
 
-    public Boolean getActive() {
+    public Boolean isActive() {
         return active;
     }
 
     public void setActive(Boolean active) {
         this.active = active;
     }
+
 }

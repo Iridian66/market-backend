@@ -1,12 +1,13 @@
 package com.tecnm.merida.market_backend.persistence.mapper;
+
 import com.tecnm.merida.market_backend.domain.Category;
 import com.tecnm.merida.market_backend.persistence.entity.Categoria;
+import com.tecnm.merida.market_backend.persistence.entity.Producto;
+import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mappings;
+import org.mapstruct.Mapping;
 
-
-import org.springframework.web.bind.annotation.Mapping;
-import org.xmlunit.util.Mapper;
-
-import java.lang.annotation.Inherited;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
@@ -18,7 +19,7 @@ public interface CategoryMapper {
     })
     Category toCategory(Categoria categoria);
 
-    @InheritedInverseConfiguration
+    @InheritInverseConfiguration
     @Mapping(target = "productos", ignore = true)
-    Category toCategory(Category category);
+    Categoria toCategoria(Category category);
 }

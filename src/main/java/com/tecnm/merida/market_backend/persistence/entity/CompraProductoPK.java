@@ -2,9 +2,6 @@ package com.tecnm.merida.market_backend.persistence.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-
 import java.io.Serializable;
 
 
@@ -32,4 +29,5 @@ public class CompraProductoPK implements Serializable {
     public void setIdProducto(Integer idProducto) {
         this.idProducto = idProducto;
     }
+
 }

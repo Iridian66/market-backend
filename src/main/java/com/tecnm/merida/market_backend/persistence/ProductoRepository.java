@@ -1,14 +1,15 @@
 package com.tecnm.merida.market_backend.persistence;
 
-import com.tecnm.merida.market_backend.domain.Product;
+
 import com.tecnm.merida.market_backend.persistence.crud.ProductoCrudRepository;
 import com.tecnm.merida.market_backend.persistence.entity.Producto;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class ProductoRepository {
-
     private ProductoCrudRepository productoCrudRepository;
 
     //SELECT * FROM productos
@@ -19,23 +20,23 @@ public class ProductoRepository {
     }
 
     public List<Producto> getByCategory(int idCategoria){
-        return productoCrudRepository.findByCategoriaOrderByNombreAsc(idCategoria);
+        return productoCrudRepository.findByIdCategoriaOrderByNombreAsc(idCategoria);
 
     }
-    public <List<Producto>> getEscasos(int cantidad){
-        return productoCrudRepository.findByCantidadStockLessThenAndEstado(cantidad, estado: true);
+    public List<Producto> getEscasos(int cantidad){
+        return productoCrudRepository.findByCantidadStockLessThanAndEstado(cantidad, true);
     }
 
     public Optional<Producto> getProducto(int idProducto){
-        return;productoCrudRepository.findBy(idProducto);
+        return productoCrudRepository.findById(idProducto);
     }
 
-    Public Producto save(Producto producto){
+    public Producto save(Producto producto){
         return productoCrudRepository.save(producto);
     }
     public void delete(int idProducto){
-        productoCrudRepository.deleteBy(idProducto);
+        productoCrudRepository.deleteById(idProducto);
     }
 }
 
-/
+
