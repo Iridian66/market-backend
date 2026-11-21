@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hibernate.mapping.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,34 +23,28 @@ import java.util.List;
 @Tag( name = "Product", description = "Manaje your products")
 public class ProductController {
 
+    @Autowired
     private ProductService productService;
-    private ProductRepository productRepository;
+
+
 
     @GetMapping("")
     @Operation(summary = "Get all products",
-    description = "Return a list of all available products")
-    @ApiResponse(responseCode = "200",
-            description = "Successful retrieval of products")
-    @ApiResponse(responseCode = "500",
-    description = "Internal server error")
-    public ResponseEntity<List<Product>> getAll(){
+            description = "Return a list of all available products")
+    @ApiResponse(responseCode = "200", description = "Successful retrieval of products")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public ResponseEntity<List<Product>> getAll() {
         return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
-
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get product by ID",
             description = "Return a product by its ID if it exists")
-    @ApiResponse(responseCode = "200",
-            description = "Product found")
-    @ApiResponse(responseCode = "404",
-            description = "Product not found")
-    @ApiResponse(responseCode = "500",
-            description = "Internal server error")
+    @ApiResponse(responseCode = "200", description = "Product found")
+    @ApiResponse(responseCode = "404", description = "Product not found")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<Product> getProduct(
-            @Parameter(description = "ID of the product to be retrieved",
-            example =  "7",
-            required = true)
+            @Parameter(description = "ID of the product to be retrieved", example =  "7", required = true)
             @PathVariable("id") int productId){
        return productService.getProduct(productId)
                .map(ResponseEntity::ok)
@@ -59,15 +54,11 @@ public class ProductController {
     @GetMapping("/category/{categoryId}")
     @Operation(summary = "Get products by category",
             description = "Return all products in a specific category")
-    @ApiResponse(responseCode = "200",
-            description = "Product(s) found in the category")
-    @ApiResponse(responseCode = "404",
-            description = "Product(s) not found in the category")
-    @ApiResponse(responseCode = "500",
-            description = "Internal server error")
+    @ApiResponse(responseCode = "200", description = "Product(s) found in the category")
+    @ApiResponse(responseCode = "404", description = "Product(s) not found in the category")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
     public ResponseEntity<List<Product>> getByCategory(
-            @Parameter(description = "Category ID",
-                    example = "7", required = true)
+            @Parameter(description = "Category ID", example = "7", required = true)
             @PathVariable int categoryId){
         return productService.getByCategory(categoryId)
                 .map(ResponseEntity::ok)
@@ -109,6 +100,40 @@ public class ProductController {
         return new ResponseEntity<>(productService.save(product), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Update an existing product",
+            description = "Updates a product by its ID if it exists",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    content = @Content(
+                            examples = @ExampleObject(
+                                    name = "Update Product",
+                                    value = """
+                                            {
+                                               "name" : "Helado de Chocolate",
+                                               "categoryId" : 5,
+                                               "price" : 22.00,
+                                               "stock" : 250,
+                                               "active" : true
+                                            }
+                                            """
+                            )
+                    )
+            )
+    )
+    @ApiResponse(responseCode = "200", description = "Product updated successfully")
+    @ApiResponse(responseCode = "404", description = "Product not found")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public ResponseEntity<Product> update(
+            @Parameter(description = "ID of the product to update", example = "7", required = true)
+            @PathVariable("id") int productId,
+            @RequestBody Product product) {
+        return productService.update(productId, product)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a product by ID", description = "Deletes a product if it exists")
     @ApiResponse(responseCode = "200", description = "Product deleted successfully")
@@ -118,10 +143,12 @@ public class ProductController {
     @ApiResponse(responseCode = "404", description = "Product not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
 
-    public ResponseEntity<Product> delete(@PathVariable int productId) {
-        if (productService.delete(productId)){
+    public ResponseEntity<Void> delete(
+            @Parameter(description = "ID of the product to delete", example = "7", required = true)
+            @PathVariable("id") int productId) {
+        if (productService.delete(productId)) {
             return ResponseEntity.ok().build();
-        } {
+        } else  {
             return ResponseEntity.notFound().build();
         }
     }
